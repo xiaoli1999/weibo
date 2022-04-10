@@ -1,6 +1,6 @@
 <template>
     <div class="footer">
-        <van-tabbar v-model="active" active-color="#ff8200" @change="onChange" router>
+        <van-tabbar :value="active" active-color="#ff8200" router>
             <van-tabbar-item to="/home" icon="home-o">首页</van-tabbar-item>
             <van-tabbar-item to="/news" icon="friends-o" dot>消息</van-tabbar-item>
             <van-tabbar-item to="/user" icon="friends-o">个人中心</van-tabbar-item>
@@ -13,12 +13,20 @@ export default {
     name: 'Footer',
     data () {
         return {
-            active: 0
+
         }
     },
-    methods: {
-        onChange (i) {
-            this.active = i
+    computed: {
+        active () {
+            if (this.$route.name === 'home') {
+                return 0
+            } else if (this.$route.name === 'news') {
+                return 1
+            } if (this.$route.name === 'user') {
+                return 2
+            } else {
+                return 0
+            }
         }
     }
 }
