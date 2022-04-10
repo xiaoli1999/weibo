@@ -1,0 +1,56 @@
+{
+  "name": "vue-vant",
+  "version": "0.1.0",
+  "description": "vue+vant前端框架",
+  "author": "小黎<https://xiaoli.vip.com>",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "axios": "^0.21.4",
+    "lodash": "^4.17.21",
+    "vant": "^2.12.14",
+    "vue": "^2.6.14",
+    "vue-router": "^3.5.2",
+    "vuex": "^3.6.2",
+    "vuex-persistedstate": "^4.0.0"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^13.1.0",
+    "@commitlint/config-conventional": "^13.1.0",
+    "@vue/cli-plugin-babel": "^4.5.10",
+    "@vue/cli-plugin-eslint": "^4.5.10",
+    "@vue/cli-service": "^4.5.10",
+    "@vue/eslint-config-standard": "^5.1.2",
+    "babel-eslint": "^10.1.0",
+    "compression-webpack-plugin": "^4.0.1",
+    "eslint": "^7.32.0",
+    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.3.1",
+    "eslint-plugin-standard": "^4.1.0",
+    "eslint-plugin-vue": "^6.2.2",
+    "less": "^3.13.1",
+    "less-loader": "^6.2.0",
+    "lint-staged": "^10.5.4",
+    "pre-commit": "^1.2.2",
+    "vue-template-compiler": "^2.6.14"
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged",
+    "commit-msg": "commitlint -E GIT_PARAMS"
+  },
+  "lint-staged": {
+    "*.{js,vue}": [
+      "vue-cli-service lint",
+      "git add"
+    ]
+  },
+  "browserslist": [
+    "Chrome 69, Chrome 70, Chrome 80, Chrome 86",
+    "cover 80% in CN, not dead"
+  ]
+}
