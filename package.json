@@ -1,7 +1,7 @@
 {
-  "name": "vue-vant",
+  "name": "weibo",
   "version": "0.1.0",
-  "description": "vue+vant前端框架",
+  "description": "仿微博App",
   "author": "小黎<https://xiaoli.vip.com>",
   "private": true,
   "scripts": {

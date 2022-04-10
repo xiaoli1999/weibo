@@ -1,5 +1,10 @@
 <template>
-    <div>个人中心</div>
+    <div>
+        个人中心
+        <div class="" style="margin: 20px 16px;">
+            <van-button round block type="info" @click="$router.push('/login')">去登录</van-button>
+        </div>
+    </div>
 </template>
 
 <script>

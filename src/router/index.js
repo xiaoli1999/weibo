@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import routes from './routers'
+import store from '../store'
 // import { Message } from 'view-design'
 
 Vue.use(Router)
@@ -18,6 +19,14 @@ Router.prototype.push = function push (location) {
 // 路由导航守卫
 
 router.beforeEach(async (to, from, next) => {
+    document.title = to.meta.title
+    // const userInfo = localStorage.getItem('UserInfo')
+    // console.log(userInfo)
+    // if (!store.state.UserInfo.username) {
+    //     if (to.name !== 'login' || to.name === 'register') return next({ name: 'login' })
+    // } else {
+    //     next({ name: 'home' })
+    // }
     return next()
 })
 

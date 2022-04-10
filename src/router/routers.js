@@ -1,8 +1,15 @@
 export default [
     {
+        path: '/',
+        name: 'home',
+        redirect: '/home',
+        meta: {
+            title: '首页'
+        }
+    },
+    {
         path: '/home',
         name: 'home',
-        to: '/home',
         component: () => import(/* webpackChunkName: "Home" */'../views/Home'),
         meta: {
             title: '首页'
@@ -11,7 +18,6 @@ export default [
     {
         path: '/news',
         name: 'news',
-        to: '/news',
         component: () => import(/* webpackChunkName: "Home" */'../views/News'),
         meta: {
             title: '消息'
@@ -20,7 +26,6 @@ export default [
     {
         path: '/user',
         name: 'user',
-        to: '/user',
         component: () => import(/* webpackChunkName: "Home" */'../views/User'),
         meta: {
             title: '个人中心'

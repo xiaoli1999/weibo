@@ -5,8 +5,8 @@ import createPersistedState from 'vuex-persistedstate'
 Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
-        UserInfo: {}
-
+        UserInfo: {},
+        UserList: []
     },
     mutations: {
         setState (state, payload) {
@@ -18,9 +18,12 @@ export default new Vuex.Store({
             } else {
                 state[obj] = key
             }
+        },
+        addUser (state, user) {
+            state.UserList.push(user)
         }
     },
     plugins: [createPersistedState({
-        paths: ['UserInfo']
+        paths: ['UserInfo', 'UserList']
     })]
 })
