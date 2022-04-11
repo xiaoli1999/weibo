@@ -23,26 +23,26 @@ const externals = {
 const cdn = {
     dev: {
         css: [
-            'https://cdn.jsdelivr.net/npm/vant@2.12.14/lib/index.css'
+            'https://cdn.jsdelivr.net/npm/vant@2.12.47/lib/index.css'
         ],
         js: [
             'https://cdn.staticfile.org/vue/2.6.14/vue.runtime.min.js',
             'https://cdn.staticfile.org/vue-router/3.5.3/vue-router.min.js',
             'https://cdn.jsdelivr.net/npm/vuex@3.6.2/dist/vuex.min.js',
             'https://cdn.staticfile.org/axios/0.21.1/axios.min.js',
-            'https://cdn.jsdelivr.net/npm/vant@2.12.14/lib/vant.min.js'
+            'https://cdn.jsdelivr.net/npm/vant@2.12.47/lib/vant.min.js'
         ]
     },
     build: {
         css: [
-            'https://cdn.jsdelivr.net/npm/vant@2.12.14/lib/index.css'
+            'https://cdn.jsdelivr.net/npm/vant@2.12.47/lib/index.css'
         ],
         js: [
             'https://cdn.staticfile.org/vue/2.6.14/vue.runtime.min.js',
             'https://cdn.staticfile.org/vue-router/3.5.3/vue-router.min.js',
             'https://cdn.jsdelivr.net/npm/vuex@3.6.2/dist/vuex.min.js',
             'https://cdn.staticfile.org/axios/0.21.1/axios.min.js',
-            'https://cdn.jsdelivr.net/npm/vant@2.12.14/lib/vant.min.js'
+            'https://cdn.jsdelivr.net/npm/vant@2.12.47/lib/vant.min.js'
         ]
     }
 }

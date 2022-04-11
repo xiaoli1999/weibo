@@ -6,7 +6,7 @@
             <van-field v-model="username" type="number" name="username" label="手机号" placeholder="请输入手机号" :rules="[{ required: true, message: '手机号必填' }]"/>
             <van-field v-model="password" type="password" name="password" label="密码" placeholder="密码" :rules="[{ required: true, message: '密码不能为空' }]"/>
             <div class="login-btn">
-                <van-button round block type="info" :disabled="!username || !password || loading" native-type="submit" :loading="loading" loading-text="登录中...">提交</van-button>
+                <van-button round block type="info" :disabled="!username || !password || loading" native-type="submit" :loading="loading" loading-text="登录中...">登录</van-button>
             </div>
             <div class="go-register" @click="$router.push('/register')">还没有账号？<span >去注册</span></div>
         </van-form>

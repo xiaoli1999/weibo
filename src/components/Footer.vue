@@ -1,9 +1,9 @@
 <template>
     <div class="footer">
-        <van-tabbar :value="active" active-color="#ff8200" router>
-            <van-tabbar-item to="/home" icon="home-o">首页</van-tabbar-item>
-            <van-tabbar-item to="/news" icon="friends-o" dot>消息</van-tabbar-item>
-            <van-tabbar-item to="/user" icon="friends-o">个人中心</van-tabbar-item>
+        <van-tabbar :value="active" active-color="#222" router>
+            <van-tabbar-item to="/home" :icon="active === 0 ?  'wap-home' : 'wap-home-o'">首页</van-tabbar-item>
+            <van-tabbar-item to="/news" :icon="active === 1 ?  'chat' : 'chat-o'" dot>消息</van-tabbar-item>
+            <van-tabbar-item to="/user" :icon="active === 2 ?  'manager' : 'manager-o'">我</van-tabbar-item>
         </van-tabbar>
     </div>
 </template>
