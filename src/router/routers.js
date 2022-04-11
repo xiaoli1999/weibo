@@ -15,6 +15,8 @@ export default [
             title: '首页'
         }
     },
+
+    // TODO 消息模块
     {
         path: '/news',
         name: 'news',
@@ -23,6 +25,8 @@ export default [
             title: '消息'
         }
     },
+
+    // TODO 个人中心模块
     {
         path: '/user',
         name: 'user',
@@ -31,6 +35,8 @@ export default [
             title: '个人中心'
         }
     },
+
+    // TODO 登录注册改密模块
     {
         path: '/login',
         name: 'login',
@@ -45,6 +51,14 @@ export default [
         component: () => import(/* webpackChunkName: "Home" */'../views/Login/Register'),
         meta: {
             title: '注册'
+        }
+    },
+    {
+        path: '/password',
+        name: 'password',
+        component: () => import(/* webpackChunkName: "Home" */'../views/Login/Password'),
+        meta: {
+            title: '更改密码'
         }
     },
     {

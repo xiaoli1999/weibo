@@ -14,3 +14,9 @@ export function userRegister (data) {
     // return http.post(`color/${id}`, data)
 }
 
+export function userPassword (data) {
+    return new Promise((resolve) => {
+        setTimeout(() => resolve({ code: 200, msg: '更改成功！' }), 2000)
+    })
+    // return http.post(`color/${id}`, data)
+}
