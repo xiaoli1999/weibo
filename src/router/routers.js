@@ -33,6 +33,14 @@ export default [
         component: () => import(/* webpackChunkName: "Home" */'../views/User'),
         meta: {
             title: '个人中心'
+        },
+    },
+    {
+        path: '/user/personal',
+        name: 'personal',
+        component: () => import(/* webpackChunkName: "Home" */'../views/User/Personal'),
+        meta: {
+            title: '个人资料'
         }
     },
 

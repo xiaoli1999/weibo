@@ -39,7 +39,7 @@
         <div class="cells">
             <CellGroup inset>
                 <Cell title="账号设置" is-link to="/password" />
-                <Cell title="个人资料" is-link />
+                <Cell title="个人资料" is-link to="/user/personal" />
                 <Cell title="安全中心" is-link />
                 <Cell title="关于微博" is-link />
                 <Cell title="版本号"  value="v 0.0.1" />
