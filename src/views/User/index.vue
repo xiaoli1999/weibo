@@ -1,26 +1,29 @@
 <template>
     <div class="user">
         <header>
-            <van-icon color="#303133" size="20" name="setting-o" />
+            <van-icon color="#303133" size="20" name="setting-o" @click="$router.push('/user/personal')" />
         </header>
-        <div class="info">
-            <img src="../../assets/user.jpg" alt="" />
+        <div class="info" @click="$router.push('/user/personal')">
+            <div class="info-img">
+                <img v-if="UserInfo.img && UserInfo.img.length" :src="UserInfo.img[0].content" alt="" />
+                <van-icon v-else size="54" color="#c9c9c9" name="smile-o" />
+            </div>
             <div class="info-content">
-                <div class="info-content-title">你的黎吖</div>
-                <div class="info-content-desc">简介：暂无简介</div>
+                <div class="info-content-title">{{ UserInfo.nickname ? UserInfo.nickname : '暂无昵称' }}</div>
+                <div class="info-content-desc">{{ UserInfo.present ? UserInfo.present : '简介：暂无简介' }} </div>
             </div>
         </div>
         <div class="banner">
             <div class="banner-item">
-                <div class="banner-item-num">12</div>
+                <div class="banner-item-num">{{ UserInfo.username ? 12 : 0 }}</div>
                 <div class="banner-item-name">微博</div>
             </div>
             <div class="banner-item">
-                <div class="banner-item-num">2</div>
+                <div class="banner-item-num">{{ UserInfo.username ? 2 : 0 }}</div>
                 <div class="banner-item-name">关注</div>
             </div>
             <div class="banner-item">
-                <div class="banner-item-num">6</div>
+                <div class="banner-item-num">{{ UserInfo.username ? 6 : 0 }}</div>
                 <div class="banner-item-name">粉丝</div>
             </div>
         </div>
@@ -37,34 +40,41 @@
             </Grid>
         </div>
         <div class="cells">
-            <CellGroup inset>
-                <Cell title="账号设置" is-link to="/password" />
-                <Cell title="个人资料" is-link to="/user/personal" />
-                <Cell title="安全中心" is-link />
-                <Cell title="关于微博" is-link />
-                <Cell title="版本号"  value="v 0.0.1" />
-            </CellGroup>
+            <van-cell-group inset>
+                <van-cell title="账号设置" is-link to="/password" />
+                <van-cell title="个人资料" is-link to="/user/personal" />
+                <van-cell title="安全中心" is-link />
+                <van-cell title="关于微博" is-link />
+                <van-cell title="版本号"  value="v 0.0.1" />
+            </van-cell-group>
         </div>
-
+        <div class="exit">
+            <van-button v-if="UserInfo.username" round block type="info" size="small" @click="exit">退出登录</van-button>
+            <van-button v-else round block type="info" size="small" @click="$router.push('/login')">去登录</van-button>
+        </div>
     </div>
 </template>
 
 <script>
-import { Grid, GridItem, Cell, CellGroup } from 'vant'
+import { Grid, GridItem } from 'vant'
+import { mapMutations, mapState } from 'vuex'
 
 export default {
     name: 'User',
-    components: { Grid, GridItem, Cell, CellGroup },
+    components: { Grid, GridItem },
     data () {
         return {
 
         }
     },
+    computed: {
+        ...mapState(['UserInfo'])
+    },
     created () {
 
     },
     methods: {
-
+        ...mapMutations(['exit'])
     }
 }
 </script>
@@ -73,6 +83,7 @@ export default {
 @import "src/less/layout";
 .user {
     background: #f4f4f4;
+    padding-bottom: 50px;
 
     header {
         height: 42px;
@@ -89,12 +100,22 @@ export default {
         display: flex;
         align-items: center;
 
-        > img {
+        .info-img {
             width: 54px;
             height: 54px;
+            text-align: center;
+            line-height: 54px;
             border-radius: 100%;
             overflow: hidden;
             margin-right: 14px;
+
+            > img {
+                width: 100%;
+                height: 100%;
+            }
+        }
+        > img {
+
         }
 
         .info-content {
@@ -175,6 +196,17 @@ export default {
             font-size: 14px;
             line-height: 24px;
             background-color: #fff;
+        }
+    }
+
+    .exit {
+        margin: 20px 50px 0;
+
+        Button {
+            width: 160px;
+            margin: 0 auto;
+            border: 0;
+            background-image: linear-gradient(to right, #e86b0f 0%, #ff8200 99%, #ff8200 100%);
         }
     }
 }

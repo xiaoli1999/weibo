@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import router from '../router'
+import { Toast } from 'vant'
 import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
@@ -21,6 +23,11 @@ export default new Vuex.Store({
         },
         addUser (state, user) {
             state.UserList.push(user)
+        },
+        exit (state) {
+            state.UserInfo = {}
+            Toast('已退出')
+            router.replace('/login')
         }
     },
     plugins: [createPersistedState({
