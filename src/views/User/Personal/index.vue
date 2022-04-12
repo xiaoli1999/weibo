@@ -51,7 +51,8 @@ export default {
         }
     },
     mounted () {
-        this.userInfo = { ...this.UserInfo, ...this.userInfo }
+        this.userInfo = { ...this.userInfo, ...this.UserInfo }
+        console.log(this.userInfo)
     },
     computed: {
         ...mapState(['UserInfo'])
@@ -67,9 +68,11 @@ export default {
             setTimeout(() => {
                 file.status = 'success'
                 file.message = '上传成功'
+                this.userInfo.img[0].url = this.userInfo.img[0].content
             }, 1000)
         },
         async onSubmit (val) {
+                console.log(this.userInfo)
             this.loading = true
             const { code, msg } = await saveUserInfo(val)
             if (code !== 200) {
