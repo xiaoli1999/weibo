@@ -20,7 +20,7 @@ export default [
     {
         path: '/news',
         name: 'news',
-        component: () => import(/* webpackChunkName: "Home" */'../views/News'),
+        component: () => import(/* webpackChunkName: "News" */'../views/News'),
         meta: {
             title: '消息'
         }
@@ -30,17 +30,25 @@ export default [
     {
         path: '/user',
         name: 'user',
-        component: () => import(/* webpackChunkName: "Home" */'../views/User'),
+        component: () => import(/* webpackChunkName: "User" */'../views/User'),
         meta: {
             title: '个人中心'
-        },
+        }
     },
     {
         path: '/user/personal',
         name: 'personal',
-        component: () => import(/* webpackChunkName: "Home" */'../views/User/Personal'),
+        component: () => import(/* webpackChunkName: "Personal" */'../views/User/Personal'),
         meta: {
             title: '个人资料'
+        }
+    },
+    {
+        path: '/user/about',
+        name: 'personal',
+        component: () => import(/* webpackChunkName: "About" */'../views/User/About'),
+        meta: {
+            title: '关于微博'
         }
     },
 
@@ -48,7 +56,7 @@ export default [
     {
         path: '/login',
         name: 'login',
-        component: () => import(/* webpackChunkName: "Home" */'../views/Login'),
+        component: () => import(/* webpackChunkName: "Login" */'../views/Login'),
         meta: {
             title: '登录'
         }
@@ -56,7 +64,7 @@ export default [
     {
         path: '/register',
         name: 'register',
-        component: () => import(/* webpackChunkName: "Home" */'../views/Login/Register'),
+        component: () => import(/* webpackChunkName: "Register" */'../views/Login/Register'),
         meta: {
             title: '注册'
         }
@@ -64,7 +72,7 @@ export default [
     {
         path: '/password',
         name: 'password',
-        component: () => import(/* webpackChunkName: "Home" */'../views/Login/Password'),
+        component: () => import(/* webpackChunkName: "Password" */'../views/Login/Password'),
         meta: {
             title: '更改密码'
         }

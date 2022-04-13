@@ -44,7 +44,7 @@
                 <van-cell title="账号设置" is-link to="/password" />
                 <van-cell title="个人资料" is-link to="/user/personal" />
                 <van-cell title="安全中心" is-link />
-                <van-cell title="关于微博" is-link />
+                <van-cell title="关于微博" is-link to="/user/about" />
                 <van-cell title="版本号"  value="v 0.0.1" />
             </van-cell-group>
         </div>

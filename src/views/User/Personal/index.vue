@@ -34,7 +34,7 @@ import { mapState } from 'vuex'
 import { saveUserInfo } from '@/api/user'
 
 export default {
-    name: 'User',
+    name: 'Personal',
     components: { NavBar },
     data () {
         return {

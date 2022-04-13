@@ -17,7 +17,7 @@ import { NavBar } from 'vant'
 import { userPassword } from '@/api/login'
 
 export default {
-    name: 'Login',
+    name: 'Password',
     components: { NavBar },
     data () {
         return {
