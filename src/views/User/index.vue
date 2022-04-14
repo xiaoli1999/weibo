@@ -107,7 +107,7 @@ export default {
             line-height: 54px;
             border-radius: 100%;
             overflow: hidden;
-            margin-right: 14px;
+            margin-right: 12px;
 
             > img {
                 width: 100%;

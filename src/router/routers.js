@@ -25,6 +25,14 @@ export default [
             title: '消息'
         }
     },
+    {
+        path: '/news/chat',
+        name: 'chat',
+        component: () => import(/* webpackChunkName: "Chat" */'../views/News/Chat'),
+        meta: {
+            title: '聊天'
+        }
+    },
 
     // TODO 个人中心模块
     {

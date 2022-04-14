@@ -52,7 +52,6 @@ export default {
     },
     mounted () {
         this.userInfo = { ...this.userInfo, ...this.UserInfo }
-        console.log(this.userInfo)
     },
     computed: {
         ...mapState(['UserInfo'])
@@ -136,16 +135,19 @@ export default {
 
         /deep/ .van-uploader__preview-delete {
             border-radius: 100%;
-            width: 16px;
-            height: 16px;
+            width: 22px;
+            height: 22px;
             right: 8px;
             top: 30px;
+            font-size: 14px;
             text-align: center;
             background: rgba(0,0,0,.5);
         }
         /deep/ .van-uploader__preview-delete-icon {
-            top: 0;
-            right: 0;
+            top: 1px;
+            right: 1px;
+            font-size: 20px;
+            color: #fff;
         }
 
     }
