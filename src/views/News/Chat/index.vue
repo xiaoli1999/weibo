@@ -75,7 +75,9 @@ export default {
 
     .search-left {
         padding-right: 8px;
-        color: #696969;
+        color: #969696;
+        position: relative;
+        top: 1px;
     }
 
     /deep/ .van-search__action {

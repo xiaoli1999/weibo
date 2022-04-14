@@ -268,7 +268,7 @@ export default {
                     font-size: 16px;
                     font-weight: 500;
                     color: #222;
-                    width: calc(100% - 60px);
+                    width: calc(100% - 80px);
 
                     .msg-content-left-t {
                         width: 100%;
@@ -284,6 +284,7 @@ export default {
                         height: 20px;
                         line-height: 20px;
                         font-size: 15px;
+                        font-weight: normal;
                         color: #909399;
                         overflow: hidden;
                         text-overflow: ellipsis;
@@ -295,7 +296,7 @@ export default {
                 .msg-content-right {
                     padding-left: 8px;
                     flex-shrink: 0;
-                    width: 52px;
+                    width: 72px;
                     text-align: right;
                     font-size: 12px;
                     color: #909399;
