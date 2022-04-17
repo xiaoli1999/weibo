@@ -15,7 +15,7 @@
 <script>
 import { NavBar } from 'vant'
 import { userPassword } from '@/api/login'
-
+import { mapState } from 'vuex'
 export default {
     name: 'Password',
     components: { NavBar },
@@ -25,15 +25,19 @@ export default {
             loading: false
         }
     },
+    computed: {
+        ...mapState(['UserInfo'])
+    },
     methods: {
         async onSubmit (val) {
             this.loading = true
-            const { code, msg } = await userPassword(val)
+            const query = { passWord: val.password, userId: this.UserInfo.userId }
+            const { code, msg } = await userPassword(query)
             if (code !== 200) {
                 this.$toast.fail(msg)
                 this.loading = false
             } else {
-                this.$toast.success(msg)
+                this.$toast.success('更改成功')
                 await this.$router.go(-1)
             }
         },

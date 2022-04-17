@@ -26,7 +26,9 @@
 
 <script>
 import { NavBar } from 'vant'
-import {articleRelease} from "@/api";
+import { mapState } from 'vuex'
+import { articleRelease } from '@/api'
+
 export default {
     name: 'add',
     components: { NavBar },
@@ -36,6 +38,9 @@ export default {
             fileList: [],
             loading: false
         }
+    },
+    computed: {
+        ...mapState(['UserInfo'])
     },
     methods: {
         beforeUpload (file) {
@@ -50,11 +55,11 @@ export default {
         async save () {
             this.loading = true
             const data = {
-                content: this.content,
-                imgList: this.fileList.map(i => i.content).join(',')
+                userId: this.UserInfo.userId,
+                wbContent: this.content,
+                wbImage: this.fileList.map(i => i.content).join('***')
             }
-            console.log(data)
-            if (!data.content && !data.imgList) {
+            if (!data.wbContent && !data.wbImage) {
                 return this.$toast('您还未编辑')
             }
             setTimeout(async () => {
@@ -62,7 +67,7 @@ export default {
                 if (res.code !== 200) {
                     return this.$toast(res.msg)
                 } else {
-                    this.$toast(res.message)
+                    this.$toast('发布成功！')
                     this.$router.back()
                 }
                 this.loading = false

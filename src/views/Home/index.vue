@@ -18,6 +18,8 @@
 <script>
 import { NavBar } from 'vant'
 import ArticleList from '../../components/ArticleList'
+import { mapState } from 'vuex'
+import { getHome } from '../../api'
 export default {
     name: 'Home',
     components: { NavBar, ArticleList },
@@ -28,8 +30,8 @@ export default {
                 {
                     id: 1,
                     name: '科技犬建哥',
-                    avator: 'https://tvax2.sinaimg.cn/crop.30.0.1075.1075.180/5657b866ly1fu3arh82mvj20vm0u0who.jpg?KID=imgbed,tva&Expires=1650193490&ssig=t8LgBYUHwI',
-                    content: '这叫什么穿搭？ ',
+                    avatar: 'https://tvax2.sinaimg.cn/crop.30.0.1075.1075.180/5657b866ly1fu3arh82mvj20vm0u0who.jpg?KID=imgbed,tva&Expires=1650193490&ssig=t8LgBYUHwI',
+                    homePageDisplay: '这叫什么穿搭？ ',
                     imgList: [
                         'https://wx2.sinaimg.cn/orj360/5657b866ly1h11emnkl72j20j60pkk2n.jpg',
                         'https://wx3.sinaimg.cn/orj360/5657b866ly1h11emnw50aj20j60pkqen.jpg'
@@ -40,8 +42,8 @@ export default {
                 {
                     id: 1,
                     name: '科技犬建哥',
-                    avator: 'https://tvax2.sinaimg.cn/crop.30.0.1075.1075.180/5657b866ly1fu3arh82mvj20vm0u0who.jpg?KID=imgbed,tva&Expires=1650193490&ssig=t8LgBYUHwI',
-                    content: '这叫什么穿搭？ ',
+                    avatar: 'https://tvax2.sinaimg.cn/crop.30.0.1075.1075.180/5657b866ly1fu3arh82mvj20vm0u0who.jpg?KID=imgbed,tva&Expires=1650193490&ssig=t8LgBYUHwI',
+                    homePageDisplay: '这叫什么穿搭？ ',
                     imgList: [
                         'https://wx2.sinaimg.cn/orj360/5657b866ly1h11emnkl72j20j60pkk2n.jpg',
                         'https://wx3.sinaimg.cn/orj360/5657b866ly1h11emnw50aj20j60pkqen.jpg'
@@ -52,8 +54,8 @@ export default {
                 {
                     id: 1,
                     name: '科技犬建哥',
-                    avator: 'https://tvax2.sinaimg.cn/crop.30.0.1075.1075.180/5657b866ly1fu3arh82mvj20vm0u0who.jpg?KID=imgbed,tva&Expires=1650193490&ssig=t8LgBYUHwI',
-                    content: '这叫什么穿搭？ ',
+                    avatar: 'https://tvax2.sinaimg.cn/crop.30.0.1075.1075.180/5657b866ly1fu3arh82mvj20vm0u0who.jpg?KID=imgbed,tva&Expires=1650193490&ssig=t8LgBYUHwI',
+                    homePageDisplay: '这叫什么穿搭？ ',
                     imgList: [
                         'https://wx2.sinaimg.cn/orj360/5657b866ly1h11emnkl72j20j60pkk2n.jpg',
                         'https://wx3.sinaimg.cn/orj360/5657b866ly1h11emnw50aj20j60pkqen.jpg'
@@ -67,15 +69,28 @@ export default {
             }
         }
     },
+    computed: {
+        ...mapState(['UserInfo'])
+    },
     created () {
-
+        this.getHomeList()
     },
     methods: {
-        onRefresh () {
-            setTimeout(() => {
-                this.$toast('刷新成功')
-                this.refreshLoading = false
-            }, 1000)
+        async getHomeList () {
+            const { msg, code, data } = await getHome({ userId: this.UserInfo.userId })
+            if (code !== 200) return this.$toast.error(msg)
+            data.map(i => {
+                i.imgList = i.wbImage.split('***')
+                i.avatar = i.userInfo?.headPortrai ?? ''
+                i.name = i.userInfo?.nickname ?? ''
+                i.time = i.userInfo?.updateTime ?? ''
+            })
+            this.list = [...data, ...this.list]
+        },
+        async onRefresh () {
+            await this.getHomeList()
+            this.$toast('刷新成功')
+            this.refreshLoading = false
         },
         attention ([id, index]) {
             this.$toast('已关注')

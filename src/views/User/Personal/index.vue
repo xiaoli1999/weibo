@@ -12,8 +12,8 @@
             <van-field name="sex" label="单选框">
                 <template #input>
                     <van-radio-group v-model="userInfo.sex" direction="horizontal">
-                        <van-radio :name="0" checked-color="#ff8200">男</van-radio>
-                        <van-radio :name="1" checked-color="#ff8200">女</van-radio>
+                        <van-radio name="男" checked-color="#ff8200">男</van-radio>
+                        <van-radio name="女" checked-color="#ff8200">女</van-radio>
                     </van-radio-group>
                 </template>
             </van-field>
@@ -52,6 +52,7 @@ export default {
     },
     mounted () {
         this.userInfo = { ...this.userInfo, ...this.UserInfo }
+        if (this.UserInfo.headPortrai) this.userInfo.img[0] = { url: this.UserInfo.headPortrai, isImage: true }
     },
     computed: {
         ...mapState(['UserInfo'])
@@ -67,19 +68,19 @@ export default {
             setTimeout(() => {
                 file.status = 'success'
                 file.message = '上传成功'
-                this.userInfo.img[0].url = this.userInfo.img[0].content
             }, 1000)
         },
         async onSubmit (val) {
-                console.log(this.userInfo)
+            val.headPortrai = val.img[0].content
+            val.userId = this.UserInfo.userId
             this.loading = true
-            const { code, msg } = await saveUserInfo(val)
+            const { code, data } = await saveUserInfo(val)
             if (code !== 200) {
                 this.loading = false
                 this.$toast.error('保存失败！')
             } else {
-                this.$store.commit('setState', ['UserInfo', this.userInfo])
-                this.$toast.success(msg)
+                this.$store.commit('setState', ['UserInfo', data])
+                this.$toast.success('更新成功')
                 this.loading = false
             }
         }

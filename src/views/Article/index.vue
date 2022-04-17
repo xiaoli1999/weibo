@@ -3,17 +3,17 @@
         <NavBar title="微博正文" left-text="" left-arrow @click-left="$router.back()" fixed/>
         <van-pull-refresh v-model="refreshLoading" success-text="热门微博更新成功" @refresh="onRefresh">
             <header class="header">
-                <img class="header-img" :src="info.avator" alt="">
+                <img class="header-img" :src="info.headPortrai" alt="">
                 <div class="header-content">
-                    <div class="header-content-top">{{ info.name }}</div>
-                    <div class="header-content-bot">{{ info.time }} 来自 {{ info.city }}</div>
+                    <div class="header-content-top">{{ info.nickname }}</div>
+                    <div class="header-content-bot">{{ info.updateTime }} 来自 {{ info.city }}</div>
                 </div>
                 <div class="header-btn">
                     <van-button v-if="info.isAttention" icon="success" type="info" color="#999" size="small" round plain>已关注</van-button>
                     <van-button icon="plus" type="info" color="#ff8200" size="small" round plain @click.stop="attention(info.id)">关注</van-button>
                 </div>
             </header>
-            <main>{{ info.content }}</main>
+            <main>{{ info.wbContent }}</main>
             <div v-if="info.imgList && info.imgList.length" class="main-img">
                 <div v-for="(i, idx) in info.imgList" :key="idx">
                     <img :src="i" alt="" @click.stop="previewImg(info.imgList, idx)">
@@ -41,36 +41,31 @@
 
 <script>
 import { ImagePreview, NavBar } from 'vant'
+import { articleInfo } from '../../api'
+
 export default {
     name: 'index',
     components: { NavBar },
     data () {
         return {
             refreshLoading: false,
-            info: {
-                id: 1,
-                name: '科技犬建哥',
-                avator: 'https://tvax2.sinaimg.cn/crop.30.0.1075.1075.180/5657b866ly1fu3arh82mvj20vm0u0who.jpg?KID=imgbed,tva&Expires=1650193490&ssig=t8LgBYUHwI',
-                content: '这叫什么穿搭？ ',
-                imgList: [
-                    'https://wx2.sinaimg.cn/orj360/5657b866ly1h11emnkl72j20j60pkk2n.jpg',
-                    'https://wx3.sinaimg.cn/orj360/5657b866ly1h11emnw50aj20j60pkqen.jpg'
-                ],
-                time: '4-15 15:11',
-                city: '小米10 Pro'
-            },
+            info: {},
             tab: 0
         }
     },
     created () {
-
+        this.getInfo()
     },
     methods: {
-        onRefresh () {
-            setTimeout(() => {
-                this.$toast('刷新成功')
-                this.refreshLoading = false
-            }, 1000)
+        async getInfo () {
+            const { msg, code, data } = await articleInfo(this.$route.params.id)
+            if (code !== 200) return this.$toast.error(msg)
+            this.info = { ...data, ...data.userInfo, imgList: data.wbImage.split('***') }
+        },
+        async onRefresh () {
+            await this.getInfo()
+            this.$toast('刷新成功')
+            this.refreshLoading = false
         },
         attention ([id, index]) {
             this.$toast('已关注')

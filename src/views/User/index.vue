@@ -5,7 +5,7 @@
         </header>
         <div class="info" @click="$router.push('/user/personal')">
             <div class="info-img">
-                <img v-if="UserInfo.img && UserInfo.img.length" :src="UserInfo.img[0].content" alt="" />
+                <img v-if="UserInfo.headPortrai" :src="UserInfo.headPortrai" alt="" />
                 <van-icon v-else size="54" color="#c9c9c9" name="smile-o" />
             </div>
             <div class="info-content">
@@ -15,15 +15,15 @@
         </div>
         <div class="banner">
             <div class="banner-item">
-                <div class="banner-item-num">{{ UserInfo.username ? 12 : 0 }}</div>
+                <div class="banner-item-num">{{ UserInfo.wbNum ? UserInfo.wbNum : 0 }}</div>
                 <div class="banner-item-name">微博</div>
             </div>
             <div class="banner-item">
-                <div class="banner-item-num">{{ UserInfo.username ? 2 : 0 }}</div>
+                <div class="banner-item-num">{{ UserInfo.focusNum ? UserInfo.focusNum : 0 }}</div>
                 <div class="banner-item-name">关注</div>
             </div>
             <div class="banner-item">
-                <div class="banner-item-num">{{ UserInfo.username ? 6 : 0 }}</div>
+                <div class="banner-item-num">{{ UserInfo.fansNum ? UserInfo.fansNum : 0 }}</div>
                 <div class="banner-item-name">粉丝</div>
             </div>
         </div>
@@ -49,7 +49,7 @@
             </van-cell-group>
         </div>
         <div class="exit">
-            <van-button v-if="UserInfo.username" round block type="info" size="small" @click="exit">退出登录</van-button>
+            <van-button v-if="UserInfo.userId" round block type="info" size="small" @click="exit">退出登录</van-button>
             <van-button v-else round block type="info" size="small" @click="$router.push('/login')">去登录</van-button>
         </div>
     </div>

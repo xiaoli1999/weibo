@@ -1,17 +1,15 @@
 import http from '../libs/http.tools'
 
 export function getHome (data) {
-    return new Promise((resolve) => {
-        setTimeout(() => resolve({ code: 200, msg: '获取成功！' }), 2000)
-    })
-    // return http.get(`color/${id}`, data)
+    return http.get('wb-info/findHomeWeiBo', data)
 }
 
 export function articleRelease (data) {
-    return new Promise((resolve) => {
-        setTimeout(() => resolve({ code: 200, msg: '发布成功！' }), 2000)
-    })
-    // return http.post(`color/${id}`, data)
+    return http.post('wb-info/releaseWeiBo', data)
+}
+
+export function articleInfo (id) {
+    return http.get('wb-info/findWeiBoById?id=' + id)
 }
 
 export function articleForward (data) {

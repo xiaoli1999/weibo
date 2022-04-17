@@ -34,27 +34,17 @@ export default {
     methods: {
         async onSubmit (val) {
             this.loading = true
-            const { code, msg } = await userLogin(val)
+            const query = { userName: val.username, passWord: val.password }
+            const { code, msg, data } = await userLogin(query)
             if (code !== 200) {
                 this.$toast.fail(msg)
                 this.loading = false
             } else {
-                const i = this.UserList.findIndex(i => i.username === val.username)
-                if (i === -1) {
-                    this.loading = false
-                    this.$toast.fail('该用户未注册')
-                } else {
-                    if (this.UserList[i].password !== val.password) {
-                        this.loading = false
-                        this.$toast.fail('密码错误!')
-                    } else {
-                        this.loading = false
-                        const userInfo = { username: this.username, password: this.password }
-                        this.$store.commit('setState', ['UserInfo', userInfo])
-                        this.$toast.success(msg)
-                        await this.$router.replace('/')
-                    }
-                }
+                this.loading = false
+                this.$store.commit('setState', ['UserInfo', data.userinfo])
+                this.$store.commit('setState', ['Token', data.token])
+                this.$toast.success('登录成功！ ')
+                await this.$router.replace('/')
             }
         },
         onClickLeft () {

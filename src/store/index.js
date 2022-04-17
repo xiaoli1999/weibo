@@ -8,7 +8,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         UserInfo: {},
-        UserList: []
+        Token: ''
     },
     mutations: {
         setState (state, payload) {
@@ -21,16 +21,14 @@ export default new Vuex.Store({
                 state[obj] = key
             }
         },
-        addUser (state, user) {
-            state.UserList.push(user)
-        },
         exit (state) {
             state.UserInfo = {}
+            state.token = ''
             Toast('已退出')
             router.replace('/login')
         }
     },
     plugins: [createPersistedState({
-        paths: ['UserInfo', 'UserList']
+        paths: ['UserInfo', 'Token']
     })]
 })

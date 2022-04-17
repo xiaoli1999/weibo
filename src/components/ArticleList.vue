@@ -1,21 +1,21 @@
 <template>
     <div class="article-list">
-        <div v-for="(item, index) in list" :key="index" class="article" @click="articleInfo(item.id)">
+        <div v-for="(item, index) in list" :key="index" class="article" @click="articleInfo(item.wbId)">
             <div class="header">
-                <img class="header-img" :src="item.avator" alt="">
+                <img class="header-img" :src="item.avatar" alt="">
                 <div class="header-content">
                     <div class="header-content-top">{{ item.name }}</div>
                     <div class="header-content-bot">{{ item.time }} 来自 {{ item.city }}</div>
                 </div>
                 <div class="header-btn">
                     <van-button v-if="item.isAttention" icon="success" type="info" color="#999" size="small" round plain>已关注</van-button>
-                    <van-button icon="plus" type="info" color="#ff8200" size="small" round plain @click.stop="attention(item.id, index)">关注</van-button>
+                    <van-button icon="plus" type="info" color="#ff8200" size="small" round plain @click.stop="attention(item.wbId, index)">关注</van-button>
                 </div>
             </div>
             <div class="main">
                 <div class="main-desc">
-                    {{ item.content }}
-                    <span class="main-desc-all" v-if="item.hasContent">...全文</span>
+                    {{ item.homePageDisplay }}
+                    <span class="main-desc-all" v-if="item.homePageDisplay.length >= 60">...全文</span>
                 </div>
                 <div v-if="item.imgList && item.imgList.length" class="main-img">
                     <div v-for="(i, idx) in item.imgList" :key="idx">
@@ -24,15 +24,15 @@
                 </div>
             </div>
             <div class="panel">
-                <div @click.stop="share(item.id, index)">
+                <div @click.stop="share(item.wbId, index)">
                     <van-icon name="share-o" color="#696969" size="20" />
                     {{ item.shareNum ? item.shareNum : '转发' }}
                 </div>
-                <div @click.stop="articleInfo(item.id)">
+                <div @click.stop="articleInfo(item.wbId)">
                     <van-icon name="chat-o" color="#696969" size="20" />
                     {{ item.commentNum ? item.commentNum : '评论' }}
                 </div>
-                <div @click.stop="praise(item.id, index)">
+                <div @click.stop="praise(item.wbId, index)">
                     <van-icon v-if="item.isPraise" name="good-job-o" color="#ff8200" size="20" />
                     <van-icon v-else name="good-job-o" color="#696969" size="20" />
                     {{ item.praise ? item.praise : '赞' }}

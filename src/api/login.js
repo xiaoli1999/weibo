@@ -1,22 +1,13 @@
 import http from '../libs/http.tools'
 
 export function userLogin (data) {
-    return new Promise((resolve) => {
-        setTimeout(() => resolve({ code: 200, msg: '登录成功！' }), 2000)
-    })
-    // return http.post(`color/${id}`, data)
+    return http.post('/user-info/login', data)
 }
 
 export function userRegister (data) {
-    return new Promise((resolve) => {
-        setTimeout(() => resolve({ code: 200, msg: '注册成功！' }), 2000)
-    })
-    // return http.post(`color/${id}`, data)
+    return http.post('/user-info/addUserInfo', data)
 }
 
 export function userPassword (data) {
-    return new Promise((resolve) => {
-        setTimeout(() => resolve({ code: 200, msg: '更改成功！' }), 2000)
-    })
-    // return http.post(`color/${id}`, data)
+    return http.post('/user-info/updateUserInfo', data)
 }

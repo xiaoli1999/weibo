@@ -20,13 +20,6 @@ Router.prototype.push = function push (location) {
 
 router.beforeEach(async (to, from, next) => {
     document.title = to.meta.title
-    // const userInfo = localStorage.getItem('UserInfo')
-    // console.log(userInfo)
-    // if (!store.state.UserInfo.username) {
-    //     if (to.name !== 'login' || to.name === 'register') return next({ name: 'login' })
-    // } else {
-    //     next({ name: 'home' })
-    // }
     return next()
 })
 
