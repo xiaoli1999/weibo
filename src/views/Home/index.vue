@@ -125,6 +125,7 @@ export default {
     }
 
     /deep/ .van-pull-refresh {
+        padding-top: 46px;
         min-height: calc(100vh - 96px);
         background: #fff;
     }

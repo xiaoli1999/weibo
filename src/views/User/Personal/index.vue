@@ -5,7 +5,7 @@
         <van-form class="form" @submit="onSubmit" input-align="right">
             <van-field name="img" label="">
                 <template #input>
-                    <van-uploader v-model="userInfo.img" :max-count="1" :max-size="1000 * 1024" :after-read="beforeUpload" @oversize="$toast('文件大小不能超过 500kb')" />
+                    <van-uploader v-model="userInfo.img" :max-count="1" :max-size="1000 * 1024" :after-read="beforeUpload" @oversize="$toast('文件大小不能超过 1M')" />
                 </template>
             </van-field>
             <van-field v-model="userInfo.nickname" type="input" name="nickname" maxlength="12" label="昵称" />

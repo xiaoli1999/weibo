@@ -9,7 +9,7 @@ export function getHome (data) {
 
 export function articleRelease (data) {
     return new Promise((resolve) => {
-        setTimeout(() => resolve({ code: 200, msg: '转发成功！' }), 2000)
+        setTimeout(() => resolve({ code: 200, msg: '发布成功！' }), 2000)
     })
     // return http.post(`color/${id}`, data)
 }

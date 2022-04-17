@@ -30,7 +30,7 @@
                 </div>
                 <div @click.stop="articleInfo(item.id)">
                     <van-icon name="chat-o" color="#696969" size="20" />
-                    {{ item.comment ? item.comment : '评论' }}
+                    {{ item.commentNum ? item.commentNum : '评论' }}
                 </div>
                 <div @click.stop="praise(item.id, index)">
                     <van-icon v-if="item.isPraise" name="good-job-o" color="#ff8200" size="20" />
