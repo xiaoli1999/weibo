@@ -28,7 +28,7 @@
             </div>
         </div>
         <div class="main">
-            <Grid>
+            <Grid :border="false">
                 <GridItem icon="photo-o" text="我的图片" />
                 <GridItem icon="medal-o" text="赞/收藏" />
                 <GridItem icon="underway-o" text="浏览记录" />

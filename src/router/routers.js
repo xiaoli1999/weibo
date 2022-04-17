@@ -4,7 +4,7 @@ export default [
         name: 'home',
         redirect: '/home',
         meta: {
-            title: '首页'
+            title: '新鲜事'
         }
     },
     {
@@ -13,6 +13,31 @@ export default [
         component: () => import(/* webpackChunkName: "Home" */'../views/Home'),
         meta: {
             title: '首页'
+        }
+    },
+    // 博文详情
+    {
+        path: '/article/info/:id',
+        name: 'info',
+        component: () => import(/* webpackChunkName: "Article/index" */'../views/Article'),
+        meta: {
+            title: '微博正文'
+        }
+    },
+    {
+        path: '/article/add',
+        name: 'add',
+        component: () => import(/* webpackChunkName: "Article/add" */'../views/Article/add'),
+        meta: {
+            title: '发微博'
+        }
+    },
+    {
+        path: '/article/update/:id',
+        name: 'update',
+        component: () => import(/* webpackChunkName: "Article/update" */'../views/Article/update'),
+        meta: {
+            title: '编辑微博'
         }
     },
 

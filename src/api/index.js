@@ -1,35 +1,36 @@
 import http from '../libs/http.tools'
 
-export function getHomeList () {
-    const imgList = []
-    for (let i = 1; i <= 32; i++) {
-        imgList.push({ id: i, img: url })
-    }
+export function getHome (data) {
     return new Promise((resolve) => {
-        setTimeout(() => resolve(imgList), 1000)
+        setTimeout(() => resolve({ code: 200, msg: '获取成功！' }), 2000)
     })
-    // return http.get('img')
+    // return http.get(`color/${id}`, data)
 }
 
-export function saveHomeImg (data) {
-    return { error: true, msg: '网络错误，请稍后再试!' }
-    // return http.post('img/save', data)
+export function articleRelease (data) {
+    return new Promise((resolve) => {
+        setTimeout(() => resolve({ code: 200, msg: '转发成功！' }), 2000)
+    })
+    // return http.post(`color/${id}`, data)
 }
 
-export function getColor (id) {
-    const color = []
-    for (let i = 1; i <= 3600; i++) {
-        color.push('fff')
-    }
+export function articleForward (data) {
     return new Promise((resolve) => {
-        setTimeout(() => resolve(color.join(',')), 1000)
+        setTimeout(() => resolve({ code: 200, msg: '转发成功！' }), 2000)
     })
-    // return http.get(`color/${id}`)
+    // return http.post(`color/${id}`, data)
 }
 
-export function saveColor (data) {
+export function articleComment (data) {
     return new Promise((resolve) => {
-        setTimeout(() => resolve({ msg: '保存成功' }), 1000)
+        setTimeout(() => resolve({ code: 200, msg: '评论成功！' }), 2000)
     })
-    // return http.post('color/save', data)
+    // return http.post(`color/${id}`, data)
+}
+
+export function articleShare (data) {
+    return new Promise((resolve) => {
+        setTimeout(() => resolve({ code: 200, msg: '分享成功！' }), 2000)
+    })
+    // return http.post(`color/${id}`, data)
 }
