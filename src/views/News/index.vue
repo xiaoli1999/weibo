@@ -202,7 +202,7 @@ export default {
         font-size: 16px;
         color: #222;
         background: #f7f8fa;
-        font-weight: 600;
+        font-weight: 500;
         letter-spacing: 1px;
         position: sticky;
         top: 0;
