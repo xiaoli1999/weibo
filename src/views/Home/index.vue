@@ -19,7 +19,7 @@
 import { NavBar } from 'vant'
 import ArticleList from '../../components/ArticleList'
 import { mapState } from 'vuex'
-import { getHome } from '../../api'
+import { getHome, attentionUser, articleShare, articlePraise } from '@/api'
 export default {
     name: 'Home',
     components: { NavBar, ArticleList },
@@ -28,31 +28,43 @@ export default {
             refreshLoading: false,
             list: [
                 {
-                    id: 1,
+                    wbId: 1,
                     name: '科技犬建哥',
                     avatar: 'https://tvax2.sinaimg.cn/crop.30.0.1075.1075.180/5657b866ly1fu3arh82mvj20vm0u0who.jpg?KID=imgbed,tva&Expires=1650193490&ssig=t8LgBYUHwI',
                     homePageDisplay: '这叫什么穿搭？ ',
                     imgList: [
                         'https://wx2.sinaimg.cn/orj360/5657b866ly1h11emnkl72j20j60pkk2n.jpg',
+                        'https://wx3.sinaimg.cn/orj360/5657b866ly1h11emnw50aj20j60pkqen.jpg',
                         'https://wx3.sinaimg.cn/orj360/5657b866ly1h11emnw50aj20j60pkqen.jpg'
                     ],
                     time: '4-15 15:11',
-                    city: '小米10 Pro'
+                    city: '小米10 Pro',
+                    isAttention: false,
+                    shareNum: 5,
+                    commentNum: 8,
+                    praiseNum: 12,
+                    isPraise: false
                 },
                 {
-                    id: 1,
+                    wbId: 2,
                     name: '科技犬建哥',
                     avatar: 'https://tvax2.sinaimg.cn/crop.30.0.1075.1075.180/5657b866ly1fu3arh82mvj20vm0u0who.jpg?KID=imgbed,tva&Expires=1650193490&ssig=t8LgBYUHwI',
                     homePageDisplay: '这叫什么穿搭？ ',
                     imgList: [
                         'https://wx2.sinaimg.cn/orj360/5657b866ly1h11emnkl72j20j60pkk2n.jpg',
+                        'https://wx2.sinaimg.cn/orj360/5657b866ly1h11emnkl72j20j60pkk2n.jpg',
                         'https://wx3.sinaimg.cn/orj360/5657b866ly1h11emnw50aj20j60pkqen.jpg'
                     ],
                     time: '4-15 15:11',
-                    city: '小米10 Pro'
+                    city: '小米10 Pro',
+                    isAttention: false,
+                    shareNum: 12,
+                    commentNum: 16,
+                    praiseNum: 18,
+                    isPraise: true
                 },
                 {
-                    id: 1,
+                    wbId: 3,
                     name: '科技犬建哥',
                     avatar: 'https://tvax2.sinaimg.cn/crop.30.0.1075.1075.180/5657b866ly1fu3arh82mvj20vm0u0who.jpg?KID=imgbed,tva&Expires=1650193490&ssig=t8LgBYUHwI',
                     homePageDisplay: '这叫什么穿搭？ ',
@@ -61,12 +73,14 @@ export default {
                         'https://wx3.sinaimg.cn/orj360/5657b866ly1h11emnw50aj20j60pkqen.jpg'
                     ],
                     time: '4-15 15:11',
-                    city: '小米10 Pro'
+                    city: '小米10 Pro',
+                    isAttention: false,
+                    shareNum: 24,
+                    commentNum: 2,
+                    praiseNum: 14,
+                    isPraise: false
                 }
-            ],
-            query: {
-                page: 1
-            }
+            ]
         }
     },
     computed: {
@@ -78,7 +92,7 @@ export default {
     methods: {
         async getHomeList () {
             const { msg, code, data } = await getHome({ userId: this.UserInfo.userId })
-            if (code !== 200) return this.$toast.error(msg)
+            if (code !== 200) return this.$toast.fail(msg)
             data.map(i => {
                 i.imgList = i.wbImage.split('***')
                 i.avatar = i.userInfo?.headPortrai ?? ''
@@ -92,14 +106,39 @@ export default {
             this.$toast('刷新成功')
             this.refreshLoading = false
         },
-        attention ([id, index]) {
-            this.$toast('已关注')
+        async attention ([id, index]) {
+            const query = {
+                userId: id, // 暂定为被关注的用户的id
+                id: this.UserInfo.userId // 关注的用户的id
+            }
+            const { code, msg } = await attentionUser(query)
+            if (code !== 200) return this.$toast.fail(msg)
+            // 做关注取关处理 本来打算只做关注的
+            this.list[index].isAttention = !this.list[index].isAttention
+            this.$toast(this.list[index].isAttention ? '已关注' : '取消关注')
         },
-        share ([id, index]) {
+        async share ([id, index]) {
+            const query = {
+                wbId: id, // 微博id
+                id: this.UserInfo.userId // 用户的id
+            }
+            const { code, msg } = await articleShare(query)
+            if (code !== 200) return this.$toast.fail(msg)
+            this.$toast('已转发')
+            // TODO 暂不做判断， 后端做判断，已分享既会提示已分享
+            this.list[index].shareNum += 1
             this.$toast('已转发')
         },
-        praise ([id, index]) {
-            this.$toast('点赞成功')
+        async praise ([id, index]) {
+            const query = {
+                wbId: id, // 微博id
+                id: this.UserInfo.userId // 用户的id
+            }
+            const { code, msg } = await articlePraise(query)
+            if (code !== 200) return this.$toast.fail(msg)
+            this.list[index].praiseNum = this.list[index].isPraise ? this.list[index].praiseNum-- : this.list[index].praiseNum++
+            this.list[index].isPraise = !this.list[index].isPraise
+            this.$toast(!this.list[index].isPraise ? '取消点赞' : '点赞成功')
         }
     }
 }

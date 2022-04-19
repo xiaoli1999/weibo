@@ -1,6 +1,6 @@
 <template>
     <div class="login">
-        <NavBar title="登录" left-text="" left-arrow @click-left="onClickLeft"/>
+        <NavBar title="登录" left-text="" @click-left="onClickLeft"/>
         <img class="logo" src="../../assets/logo.png" alt=""/>
         <van-form @submit="onSubmit">
             <van-field v-model="username" type="number" name="username" label="手机号" placeholder="请输入手机号" :rules="[{ required: true, message: '手机号必填' }]"/>

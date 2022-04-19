@@ -77,7 +77,7 @@ export default {
             const { code, data } = await saveUserInfo(val)
             if (code !== 200) {
                 this.loading = false
-                this.$toast.error('保存失败！')
+                this.$toast.fail('保存失败！')
             } else {
                 this.$store.commit('setState', ['UserInfo', data])
                 this.$toast.success('更新成功')

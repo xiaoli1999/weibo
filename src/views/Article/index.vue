@@ -1,16 +1,16 @@
 <template>
     <div class="info">
         <NavBar title="微博正文" left-text="" left-arrow @click-left="$router.back()" fixed/>
-        <van-pull-refresh v-model="refreshLoading" success-text="热门微博更新成功" @refresh="onRefresh">
+        <van-pull-refresh v-model="refreshLoading" success-text="微博正文更新成功" @refresh="onRefresh">
             <header class="header">
                 <img class="header-img" :src="info.headPortrai" alt="">
                 <div class="header-content">
                     <div class="header-content-top">{{ info.nickname }}</div>
-                    <div class="header-content-bot">{{ info.updateTime }} 来自 {{ info.city }}</div>
+                    <div class="header-content-bot">更新于{{ info.updateTime }} 来自 {{ info.city }}</div>
                 </div>
-                <div class="header-btn">
+                <div class="header-btn" @click.stop="attention">
                     <van-button v-if="info.isAttention" icon="success" type="info" color="#999" size="small" round plain>已关注</van-button>
-                    <van-button icon="plus" type="info" color="#ff8200" size="small" round plain @click.stop="attention(info.id)">关注</van-button>
+                    <van-button v-else icon="plus" type="info" color="#ff8200" size="small" round plain>关注</van-button>
                 </div>
             </header>
             <main>{{ info.wbContent }}</main>
@@ -30,7 +30,10 @@
                 </div>
             </van-sticky>
             <div class="share" v-show="tab===0">
-                分享
+                <div class="share-wrap">
+                    <img v-for="(item , index) in shareList.slice(0, 10)" :key="index" :src="item" alt="">
+                    <div>等人已转发</div>
+                </div>
             </div>
             <div class="comment" v-show="tab===1">
                 评论
@@ -41,7 +44,8 @@
 
 <script>
 import { ImagePreview, NavBar } from 'vant'
-import { articleInfo } from '../../api'
+import { articleInfo, articlePraise, articleShare, attentionUser, getSharetList, getCommentList, releaseComment } from '../../api'
+import { mapState } from 'vuex'
 
 export default {
     name: 'index',
@@ -49,9 +53,51 @@ export default {
     data () {
         return {
             refreshLoading: false,
-            info: {},
-            tab: 0
+            tab: 0,
+            info: {
+                // 模拟数据
+                userId: 415614655,
+                wbId: 541,
+                headPortrai: 'https://tvax3.sinaimg.cn/crop.0.0.664.664.180/008l5vt8ly8gt83edy69vj30ig0igq3t.jpg?KID=imgbed,tva&Expires=1650387696&ssig=Gol0nAy0uA',
+                nickname: '你的黎呀',
+                updateTime: '2022-4-19 23:00',
+                city: '西安市',
+                isAttention: false,
+                shareNum: 24,
+                commentNum: 2,
+                praiseNum: 14,
+                isPraise: false
+            },
+            shareList: [
+                'https://tvax3.sinaimg.cn/crop.0.0.664.664.180/008l5vt8ly8gt83edy69vj30ig0igq3t.jpg?KID=imgbed,tva&Expires=1650387696&ssig=Gol0nAy0uA',
+                'https://tvax3.sinaimg.cn/crop.0.0.664.664.180/008l5vt8ly8gt83edy69vj30ig0igq3t.jpg?KID=imgbed,tva&Expires=1650387696&ssig=Gol0nAy0uA',
+                'https://tvax3.sinaimg.cn/crop.0.0.664.664.180/008l5vt8ly8gt83edy69vj30ig0igq3t.jpg?KID=imgbed,tva&Expires=1650387696&ssig=Gol0nAy0uA',
+                'https://tvax3.sinaimg.cn/crop.0.0.664.664.180/008l5vt8ly8gt83edy69vj30ig0igq3t.jpg?KID=imgbed,tva&Expires=1650387696&ssig=Gol0nAy0uA',
+                'https://tvax3.sinaimg.cn/crop.0.0.664.664.180/008l5vt8ly8gt83edy69vj30ig0igq3t.jpg?KID=imgbed,tva&Expires=1650387696&ssig=Gol0nAy0uA',
+                'https://tvax3.sinaimg.cn/crop.0.0.664.664.180/008l5vt8ly8gt83edy69vj30ig0igq3t.jpg?KID=imgbed,tva&Expires=1650387696&ssig=Gol0nAy0uA'
+            ],
+            commentList: [
+                {
+                    nickname: '漫漫',
+                    headPortrai: 'https://tvax3.sinaimg.cn/crop.0.0.664.664.180/008l5vt8ly8gt83edy69vj30ig0igq3t.jpg?KID=imgbed,tva&Expires=1650387696&ssig=Gol0nAy0uA',
+                    content: '我来评论啦！'
+                },
+                {
+                    nickname: '测试',
+                    headPortrai: 'https://tvax3.sinaimg.cn/crop.0.0.664.664.180/008l5vt8ly8gt83edy69vj30ig0igq3t.jpg?KID=imgbed,tva&Expires=1650387696&ssig=Gol0nAy0uA',
+                    content: '呵呵变化的SABDASJLD！'
+                },
+                {
+                    nickname: '不去',
+                    headPortrai: 'https://tvax3.sinaimg.cn/crop.0.0.664.664.180/008l5vt8ly8gt83edy69vj30ig0igq3t.jpg?KID=imgbed,tva&Expires=1650387696&ssig=Gol0nAy0uA',
+                    content: '烦死你反倒是男方拿独守空房！'
+                }
+            ],
+            commentValue: ''
         }
+    },
+    computed: {
+        ...mapState(['UserInfo'])
     },
     created () {
         this.getInfo()
@@ -59,7 +105,7 @@ export default {
     methods: {
         async getInfo () {
             const { msg, code, data } = await articleInfo(this.$route.params.id)
-            if (code !== 200) return this.$toast.error(msg)
+            if (code !== 200) return this.$toast.fail(msg)
             this.info = { ...data, ...data.userInfo, imgList: data.wbImage.split('***') }
         },
         async onRefresh () {
@@ -67,14 +113,39 @@ export default {
             this.$toast('刷新成功')
             this.refreshLoading = false
         },
-        attention ([id, index]) {
-            this.$toast('已关注')
+        async attention () {
+            const query = {
+                userId: this.info.userId, // 暂定为被关注的用户的id
+                id: this.UserInfo.userId // 关注的用户的id
+            }
+            const { code, msg } = await attentionUser(query)
+            if (code !== 200) return this.$toast.fail(msg)
+            // 做关注取关处理 本来打算只做关注的
+            this.info.isAttention = !this.info.isAttention
+            this.$toast(this.info.isAttention ? '已关注' : '取消关注')
         },
-        share ([id, index]) {
+        async share () {
+            const query = {
+                wbId: this.info.wbId, // 微博id
+                id: this.UserInfo.userId // 用户的id
+            }
+            const { code, msg } = await articleShare(query)
+            if (code !== 200) return this.$toast.fail(msg)
+            this.$toast('已转发')
+            // TODO 暂不做判断， 后端做判断，已分享既会提示已分享
+            this.info.shareNum += 1
             this.$toast('已转发')
         },
-        praise ([id, index]) {
-            this.$toast('点赞成功')
+        async praise () {
+            const query = {
+                wbId: this.info.wbId, // 微博id
+                id: this.UserInfo.userId // 用户的id
+            }
+            const { code, msg } = await articlePraise(query)
+            if (code !== 200) return this.$toast.fail(msg)
+            this.info.praiseNum = this.info.isPraise ? this.info.praiseNum-- : this.info.praiseNum++
+            this.info.isPraise = !this.info.isPraise
+            this.$toast(!this.info.isPraise ? '取消点赞' : '点赞成功')
         },
         previewImg (images, index) {
             ImagePreview({
@@ -159,6 +230,8 @@ export default {
         .header-btn {
             margin-left: 10px;
             flex-shrink: 0;
+            min-width: 82px;
+            text-align: right;
         }
     }
 
@@ -231,7 +304,7 @@ export default {
                     display: block;
                     content: '';
                     position: absolute;
-                    width: 80%;
+                    width: 100%;
                     height: 2px;
                     border-radius: 2px;
                     bottom: 2px;
@@ -246,7 +319,33 @@ export default {
 
     .share {
         background: #fff;
-        min-height: 100vh;
+        min-height: calc(100vh - 220px);
+        padding: 16px 12px;
+
+        .share-wrap {
+            width: 100%;
+            min-height: 30px;
+            display: flex;
+            align-items: center;
+
+            > img {
+                width: 24px;
+                height: 24px;
+                border-radius: 24px;
+                border: 0.5px solid #f7faf8;
+                box-sizing: border-box;
+                margin: 3px 2px 3px 0;
+                overflow: hidden;
+            }
+
+            > div {
+                padding-left: 4px;
+                display: inline-block;
+                font-size: 14px;
+                color: #959595;
+                flex-shrink: 0;
+            }
+        }
     }
 
     .comment {

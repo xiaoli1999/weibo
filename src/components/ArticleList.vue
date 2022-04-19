@@ -7,10 +7,11 @@
                     <div class="header-content-top">{{ item.name }}</div>
                     <div class="header-content-bot">{{ item.time }} 来自 {{ item.city }}</div>
                 </div>
-                <div class="header-btn">
+                <div v-if="home" class="header-btn" @click.stop="attention(item.userId, index)">
                     <van-button v-if="item.isAttention" icon="success" type="info" color="#999" size="small" round plain>已关注</van-button>
-                    <van-button icon="plus" type="info" color="#ff8200" size="small" round plain @click.stop="attention(item.wbId, index)">关注</van-button>
+                    <van-button v-else icon="plus" type="info" color="#ff8200" size="small" round plain>关注</van-button>
                 </div>
+                <div v-else class="header-btn"></div>
             </div>
             <div class="main">
                 <div class="main-desc">
@@ -23,7 +24,7 @@
                     </div>
                 </div>
             </div>
-            <div class="panel">
+            <div v-if="home" class="panel">
                 <div @click.stop="share(item.wbId, index)">
                     <van-icon name="share-o" color="#696969" size="20" />
                     {{ item.shareNum ? item.shareNum : '转发' }}
@@ -35,7 +36,7 @@
                 <div @click.stop="praise(item.wbId, index)">
                     <van-icon v-if="item.isPraise" name="good-job-o" color="#ff8200" size="20" />
                     <van-icon v-else name="good-job-o" color="#696969" size="20" />
-                    {{ item.praise ? item.praise : '赞' }}
+                    {{ item.praiseNum ? item.praiseNum : '赞' }}
                 </div>
             </div>
         </div>
@@ -50,6 +51,10 @@ export default {
         list: {
             type: Array,
             require: true
+        },
+        home: {
+            type: Boolean,
+            default: true
         }
     },
     methods: {
@@ -133,6 +138,8 @@ export default {
             .header-btn {
                 margin-left: 10px;
                 flex-shrink: 0;
+                min-width: 82px;
+                text-align: right;
             }
         }
 

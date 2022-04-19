@@ -84,6 +84,14 @@ export default [
             title: '关于微博'
         }
     },
+    {
+        path: '/user/article',
+        name: 'article',
+        component: () => import(/* webpackChunkName: "Article" */'../views/User/Article'),
+        meta: {
+            title: '我的微博'
+        }
+    },
 
     // TODO 登录注册改密模块
     {

@@ -14,7 +14,7 @@
             </div>
         </div>
         <div class="banner">
-            <div class="banner-item">
+            <div class="banner-item" @click="myArticle">
                 <div class="banner-item-num">{{ UserInfo.wbNum ? UserInfo.wbNum : 0 }}</div>
                 <div class="banner-item-name">微博</div>
             </div>
@@ -74,7 +74,10 @@ export default {
 
     },
     methods: {
-        ...mapMutations(['exit'])
+        ...mapMutations(['exit']),
+        myArticle () {
+            this.$router.push('/user/article')
+        }
     }
 }
 </script>
