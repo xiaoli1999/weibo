@@ -71,10 +71,15 @@ export default {
         ...mapState(['UserInfo'])
     },
     created () {
-
+        if (this.UserInfo.userId) this.getUser()
     },
     methods: {
         ...mapMutations(['exit']),
+        async getUser () {
+            const { msg, code, data } = await getUserInfo(this.UserInfo.userId)
+            if (code !== 200) return this.$toast.error(msg)
+            this.$store.commit('setState', ['UserInfo', data])
+        },
         myArticle () {
             this.$router.push('/user/article')
         }
