@@ -118,6 +118,7 @@ export default {
             this.$toast(this.list[index].isAttention ? '已关注' : '取消关注')
         },
         async share ([id, index]) {
+            this.$checkLogin()
             const query = {
                 wbId: id, // 微博id
                 id: this.UserInfo.userId // 用户的id

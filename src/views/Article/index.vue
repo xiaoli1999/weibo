@@ -34,9 +34,40 @@
                     <img v-for="(item , index) in shareList.slice(0, 10)" :key="index" :src="item" alt="">
                     <div>等人已转发</div>
                 </div>
+                <div class="share-panel">
+                    <div @click="share">
+                        <van-icon name="share-o" color="#696969" size="20" />
+                        转发
+                    </div>
+                    <div @click="tab=1">
+                        <van-icon name="chat-o" color="#696969" size="20" />
+                        评论
+                    </div>
+                    <div @click.stop="praise">
+                        <van-icon v-if="info.isPraise" name="good-job-o" color="#ff8200" size="20" />
+                        <van-icon v-else name="good-job-o" color="#696969" size="20" />
+                        {{ info.praiseNum ? info.praiseNum : '赞' }}
+                    </div>
+                </div>
             </div>
             <div class="comment" v-show="tab===1">
-                评论
+                <div v-if="commentList && commentList.length">
+                    <div v-for="(item, index) in commentList" :key="index" class="comment-item">
+                        <img :src="item.headPortrai" alt="">
+                        <div class="comment-item-r">
+                            <div class="comment-item-name">{{ item.nickname }}</div>
+                            <div class="comment-item-content">{{ item.content }}</div>
+                        </div>
+                    </div>
+                </div>
+                <van-empty v-else description="暂无评论" />
+                <div class="comment-panel">
+                    <van-search v-model="commentValue" shape="round" background="#fff" label="" placeholder="说点什么吧" show-action>
+                        <template #action>
+                            <van-button round block type="info" size="small" :disabled="!commentValue || commentLoading" @click="submitComment" :loading="commentLoading" loading-text="评论中...">评论</van-button>
+                        </template>
+                    </van-search>
+                </div>
             </div>
         </van-pull-refresh>
     </div>
@@ -93,7 +124,8 @@ export default {
                     content: '烦死你反倒是男方拿独守空房！'
                 }
             ],
-            commentValue: ''
+            commentValue: '',
+            commentLoading: false
         }
     },
     computed: {
@@ -101,6 +133,8 @@ export default {
     },
     created () {
         this.getInfo()
+        this.getShare()
+        this.getComment()
     },
     methods: {
         async getInfo () {
@@ -108,8 +142,20 @@ export default {
             if (code !== 200) return this.$toast.fail(msg)
             this.info = { ...data, ...data.userInfo, imgList: data.wbImage.split('***') }
         },
+        async getShare () {
+            const { msg, code, data } = await getSharetList(this.$route.params.id)
+            if (code !== 200) return this.$toast.fail(msg)
+            this.shareList = data
+        },
+        async getComment () {
+            const { msg, code, data } = await getCommentList(this.$route.params.id)
+            if (code !== 200) return this.$toast.fail(msg)
+            this.commentList = data
+        },
         async onRefresh () {
             await this.getInfo()
+            await this.getShare()
+            await this.getComment()
             this.$toast('刷新成功')
             this.refreshLoading = false
         },
@@ -153,6 +199,18 @@ export default {
                 startPosition: index,
                 closeable: true
             })
+        },
+        async submitComment () {
+            this.commentLoading = true
+            const query = {
+                content: this.commentValue,
+                id: this.UserInfo.userId // 用户的id
+            }
+            const { code, msg } = await releaseComment(query)
+            if (code !== 200) return this.$toast.fail(msg)
+            this.commentLoading = false
+            this.$toast('评价成功！')
+            await this.getComment()
         }
     }
 }
@@ -346,11 +404,126 @@ export default {
                 flex-shrink: 0;
             }
         }
+
+        .share-panel {
+            position: fixed;
+            bottom: 0;
+            width: calc(100% - 64px);
+            padding: 0 32px;
+            height: 40px;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            box-shadow: 2px 0 8px 1px #eee;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            > div {
+                max-width: 25%;
+                font-size: 14px;
+                color: #363636;
+            }
+        }
     }
 
     .comment {
         background: #fff;
         min-height: 100vh;
+
+        .comment-item {
+            margin: 0 16px;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            overflow: hidden;
+
+            > img {
+                width: 32px;
+                height: 32px;
+                border: .5px solid #eee;
+                border-radius: 32px;
+                overflow: hidden;
+                margin-right: 8px;
+                flex-shrink: 0;
+                box-sizing: border-box;
+            }
+
+            .comment-item-r {
+                width: calc(100% - 40px);
+
+                .comment-item-name {
+                    height: 22px;
+                    line-height: 20px;
+                    font-size: 14px;
+                    color: #ff8200;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    word-break: break-all;
+                }
+
+                .comment-item-content{
+                    min-height: 18px;
+                    line-height: 16px;
+                    font-size: 12px;
+                    color: #939393;
+                    word-break: break-all;
+                }
+            }
+
+            .header-btn {
+                margin-left: 10px;
+                flex-shrink: 0;
+                min-width: 82px;
+                text-align: right;
+            }
+        }
+
+        .comment-panel {
+            position: fixed;
+            width: 100%;
+            height: 44px;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            box-shadow: 2px 0 8px 1px #eee;
+            bottom: 0;
+            background: #fff;
+
+            /deep/ .van-search {
+                padding: 8px 0 6px 8px;
+
+                .van-cell {
+                    line-height: 22px;
+                }
+            }
+
+            /deep/ .van-search__content {
+                border-radius: 60px;
+                background: #f7f8fa;
+            }
+
+            /deep/ .van-field__left-icon {
+                display: none;
+            }
+
+            /deep/ .van-button--small {
+                height: 26px;
+                padding: 0 10px;
+                border: 0;
+                background-image: linear-gradient(to right, #e86b0f 0%, #ff8200 99%, #ff8200 100%);
+            }
+
+            .search-left {
+                padding-right: 8px;
+                color: #969696;
+                position: relative;
+                top: 1px;
+            }
+
+        }
     }
 }
 </style>
