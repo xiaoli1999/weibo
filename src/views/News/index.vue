@@ -173,6 +173,9 @@ export default {
             return num
         }
     },
+    created () {
+        if (!this.$checkLogin()) return this.$router.replace('/login')
+    },
     methods: {
         clearMessage () {
             Dialog.confirm({ message: '确定清除私信的所有未读吗' }).then(() => {

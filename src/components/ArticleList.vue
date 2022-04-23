@@ -27,16 +27,16 @@
             <div v-if="home" class="panel">
                 <div @click.stop="share(item.wbId, index)">
                     <van-icon name="share-o" color="#696969" size="20" />
-                    {{ item.shareNum ? item.shareNum : '转发' }}
+                    {{ item.forwardingNum ? item.forwardingNum : 0 }}
                 </div>
                 <div @click.stop="articleInfo(item.wbId)">
                     <van-icon name="chat-o" color="#696969" size="20" />
-                    {{ item.commentNum ? item.commentNum : '评论' }}
+                    {{ item.evaluationNum ? item.evaluationNum : 0 }}
                 </div>
                 <div @click.stop="praise(item.wbId, index)">
-                    <van-icon v-if="item.isPraise" name="good-job-o" color="#ff8200" size="20" />
+                    <van-icon v-if="item.isLike" name="good-job-o" color="#ff8200" size="20" />
                     <van-icon v-else name="good-job-o" color="#696969" size="20" />
-                    {{ item.praiseNum ? item.praiseNum : '赞' }}
+                    {{ item.likeNum ? item.likeNum : 0 }}
                 </div>
             </div>
         </div>

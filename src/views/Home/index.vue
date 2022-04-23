@@ -94,6 +94,8 @@ export default {
             const { msg, code, data } = await getHome({ userId: this.UserInfo.userId })
             if (code !== 200) return this.$toast.fail(msg)
             data.map(i => {
+                i.isAttention = false
+                i.isLike = false
                 i.imgList = i.wbImage.split('***')
                 i.avatar = i.userInfo?.headPortrai ?? ''
                 i.name = i.userInfo?.nickname ?? ''
@@ -107,39 +109,44 @@ export default {
             this.refreshLoading = false
         },
         async attention ([id, index]) {
+            if (!this.$checkLogin()) return this.$router.replace('/login')
+            const isAttention = this.list[index].isAttention
             const query = {
-                userId: id, // 暂定为被关注的用户的id
-                id: this.UserInfo.userId // 关注的用户的id
+                beFocusUserId: id, // 暂定为被关注的用户的id
+                userId: this.UserInfo.userId, // 关注的用户的id
+                isAttention
             }
             const { code, msg } = await attentionUser(query)
             if (code !== 200) return this.$toast.fail(msg)
-            // 做关注取关处理 本来打算只做关注的
-            this.list[index].isAttention = !this.list[index].isAttention
+
+            this.list[index].isAttention = !isAttention
             this.$toast(this.list[index].isAttention ? '已关注' : '取消关注')
         },
         async share ([id, index]) {
-            this.$checkLogin()
+            if (!this.$checkLogin()) return this.$router.replace('/login')
             const query = {
-                wbId: id, // 微博id
-                id: this.UserInfo.userId // 用户的id
+                wbId: id, // 暂定为被关注的用户的id
+                userId: this.UserInfo.userId // 关注的用户的id
             }
             const { code, msg } = await articleShare(query)
             if (code !== 200) return this.$toast.fail(msg)
             this.$toast('已转发')
-            // TODO 暂不做判断， 后端做判断，已分享既会提示已分享
-            this.list[index].shareNum += 1
+            this.list[index].forwardingNum += 1
             this.$toast('已转发')
         },
         async praise ([id, index]) {
+            if (!this.$checkLogin()) return this.$router.replace('/login')
             const query = {
                 wbId: id, // 微博id
-                id: this.UserInfo.userId // 用户的id
+                userId: this.UserInfo.userId, // 用户的id
+                isLike: this.list[index].isLike ?? false
             }
             const { code, msg } = await articlePraise(query)
             if (code !== 200) return this.$toast.fail(msg)
-            this.list[index].praiseNum = this.list[index].isPraise ? this.list[index].praiseNum-- : this.list[index].praiseNum++
-            this.list[index].isPraise = !this.list[index].isPraise
-            this.$toast(!this.list[index].isPraise ? '取消点赞' : '点赞成功')
+
+            this.list[index].likeNum = this.list[index].isLike ? this.list[index].likeNum - 1 : this.list[index].likeNum + 1
+            this.list[index].isLike = !this.list[index].isLike
+            this.$toast(!this.list[index].isLike ? '取消点赞' : '点赞成功')
         }
     }
 }

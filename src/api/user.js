@@ -7,3 +7,7 @@ export function saveUserInfo (data) {
 export function getUserInfo (id) {
     return http.get('/user-info/findUserInfoById?id=' + id)
 }
+
+export function getMyArticle (id) {
+    return http.get('/user-info/findWeiBoListByUserId?id=' + id)
+}

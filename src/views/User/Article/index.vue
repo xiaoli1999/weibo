@@ -71,15 +71,13 @@ export default {
         async getMyList () {
             const { msg, code, data } = await getMyArticle(this.UserInfo.userId)
             if (code !== 200) return this.$toast.fail(msg)
-            // data.map(i => {
-            //     i.imgList = i.wbImage.split('***')
-            //     i.avatar = i.userInfo?.headPortrai ?? ''
-            //     i.name = i.userInfo?.nickname ?? ''
-            //     i.time = i.userInfo?.updateTime ?? ''
-            // })
-            // this.list = [...data, ...this.list]
-            // TODO 模拟拿到返回的数据
-            this.list = [...this.list, ...this.list, ...this.list]
+            data.map(i => {
+                i.imgList = i.wbImage.split('***')
+                i.avatar = i.userInfo?.headPortrai ?? ''
+                i.name = i.userInfo?.nickname ?? ''
+                i.time = i.userInfo?.updateTime ?? ''
+            })
+            this.list = [...data, ...this.list]
         },
         async onRefresh () {
             await this.getMyArticle()

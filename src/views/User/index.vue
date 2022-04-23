@@ -58,6 +58,7 @@
 <script>
 import { Grid, GridItem } from 'vant'
 import { mapMutations, mapState } from 'vuex'
+import { getUserInfo } from '../../api/user'
 
 export default {
     name: 'User',
@@ -71,6 +72,7 @@ export default {
         ...mapState(['UserInfo'])
     },
     created () {
+        if (!this.$checkLogin()) return this.$router.replace('/login')
         if (this.UserInfo.userId) this.getUser()
     },
     methods: {
